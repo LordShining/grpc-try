@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/LordShining/grpc-try/pb";
+
+service Worker {
+    rpc Working (WorkRequest) returns (WorkReply) {}
+}
+
+message WorkRequest {
+    int32 id = 1;
+    repeated string comments = 2;
+}
+
+message WorkReply {
+    int32 id = 1;
+    bool result = 2;
+}
