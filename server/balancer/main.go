@@ -14,12 +14,16 @@ import (
 )
 
 const (
+	//PORT
 	PORT = ":66600"
 )
 
+//server ...
 type Server struct {
-	pb.UnimplementedBalancerServer
+	pb.UnimplementedWorkerServer
 }
+
+//Request ...
 type Request struct {
 	id       int32
 	comments []string
@@ -27,7 +31,7 @@ type Request struct {
 
 //新请求监听
 func main() {
-	lis, err := net.Listen("tcp", port)
+	lis, err := net.Listen("tcp", PORT)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
