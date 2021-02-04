@@ -5,7 +5,23 @@ package pb;
 option go_package = "github.com/LordShining/grpc-try/pb";
 
 service Worker {
-    rpc Working (WorkRequest) returns (WorkReply) {}
+    rpc Working (WorkRequest) returns (Reply) {}
+}
+
+service Balancer {
+    rpc GetWorks (WorkRequest) returns (Reply) {};
+    rpc WorkerRegister (WorkerRegisterRequest) returns (Reply) {};
+    rpc WorkerAlive (Request) returns (Reply) {};
+}
+
+message Request {
+    int32 id = 1;
+    string message = 2;
+}
+
+message Reply {
+    int32 id = 1;
+    bool result = 2;
 }
 
 message WorkRequest {
@@ -13,7 +29,6 @@ message WorkRequest {
     repeated string comments = 2;
 }
 
-message WorkReply {
-    int32 id = 1;
-    bool result = 2;
+message WorkerRegisterRequest {
+    string port = 1;
 }
