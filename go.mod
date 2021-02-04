@@ -3,6 +3,7 @@ module grpc-try
 go 1.15
 
 require (
+	github.com/LordShining/grpc-try v0.0.0-20210204093245-dc45d8e711c6
 	github.com/golang/protobuf v1.4.3
 	github.com/google/go-cmp v0.5.4 // indirect
 	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
