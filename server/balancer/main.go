@@ -9,7 +9,7 @@ import (
 	"log"
 	"net"
 
-	pb "grpc-try/pb"
+	pb "github.com/LordShining/grpc-try/pb"
 
 	"google.golang.org/grpc"
 )
