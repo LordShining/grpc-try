@@ -1,7 +1,7 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
-github.com/LordShining/grpc-try v0.0.0-20210204040953-0388b0153c7a h1:LItr4p/2vG6Z9tfpWqo5SoiMzUMCeoAWprfWRJR4Sag=
-github.com/LordShining/grpc-try v0.0.0-20210204040953-0388b0153c7a/go.mod h1:moRdRgJxy+eeFQ6b3OsiOsX9edvLl8se94GIy/n1MEs=
+github.com/LordShining/grpc-try v0.0.0-20210204090947-6158c74ef5fc h1:2omav6SWSvuS3TjfZPkOKB7lcgY7GOTmQE5c8bLk388=
+github.com/LordShining/grpc-try v0.0.0-20210204090947-6158c74ef5fc/go.mod h1:moRdRgJxy+eeFQ6b3OsiOsX9edvLl8se94GIy/n1MEs=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
