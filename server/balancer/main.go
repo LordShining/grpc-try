@@ -9,7 +9,8 @@ import (
 	"log"
 	"net"
 
-	pb "github.com/LordShining/grpc-try/pb"
+	pb "grpc-try/pb"
+
 	"google.golang.org/grpc"
 )
 
@@ -20,7 +21,7 @@ const (
 
 //server ...
 type Server struct {
-	pb.UnimplementedWorkerServer
+	pb.UnimplementedBalancerServer
 }
 
 //Request ...
