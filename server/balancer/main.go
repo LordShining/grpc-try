@@ -2,12 +2,12 @@ package main
 
 import (
 	//"fmt"
-	//"contex"
 	//"sync"
 	"context"
-	"fmt"
 	"log"
 	"net"
+	"strings"
+	"time"
 
 	pb "github.com/LordShining/grpc-try/pb"
 
@@ -15,43 +15,70 @@ import (
 )
 
 const (
-	//PORT
+	//PORT ...
 	PORT = ":66600"
 )
 
-//server ...
+//Server ...
 type Server struct {
 	pb.UnimplementedBalancerServer
+	portList  []string
+	taskCount []int
+	workerNum int
 }
 
-//Request ...
-type Request struct {
-	id       int32
-	comments []string
-}
-
-//新请求监听
+//注册服务
 func main() {
 	lis, err := net.Listen("tcp", PORT)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
-	pb.RegisterGreeterServer(s, &server{})
+	pb.RegisterBalancerServer(s, &Server{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }
 
-//新服务器注册监听
+//Working 任务接收与分配
+func (s *Server) Working(ctx context.Context, req *pb.WorkRequest) (*pb.Reply, error) {
+	tWN := s.workerNum
+	tPL := make([]string, tWN)
+	copy(tPL, s.portList)
+	tTC := make([]int, tWN)
+	copy(tTC, s.taskCount)
+	for i, v := range tPL {
+		if tTC[(i-1)%tWN] > tTC[i] {
+			//give task to worker i
+			address := strings.Join([]string{"localhost"}, v)
+			// Set up a connection to the server.
+			conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
+			if err != nil {
+				log.Fatalf("did not connect: %v", err)
+			}
+			defer conn.Close()
+			c := pb.NewBalancerClient(conn)
 
-func (s *Server) DoingWork(ctx context.Context, request *pb.WorkRequest) (*pb.WorkReply, error) {
-	var r Request
-	r.id = request.GetId()
-	r.comments = request.GetComments()
-	fmt.Print("Doing work: %d\n", r.id)
-	for _, v := range r.comments {
-		fmt.Println(v)
+			// Contact the server and print out its response.
+			ctx, cancel := context.WithTimeout(context.Background(), time.Minute*5)
+			defer cancel()
+			r, err := c.Working(ctx, req)
+			if err != nil {
+				log.Fatalf("could not doing: %v", err)
+			}
+			return r, nil
+		}
 	}
-	return &pb.WorkReply{Id: r.id, Result: true}, nil
+
+	return &pb.Reply{Id: "0", Result: false}, nil
+}
+
+//WorkerRegister 处理节点注册
+func (s *Server) WorkerRegister(ctx context.Context, req *pb.WorkerRegisterRequest) (*pb.Reply, error) {
+	return &pb.Reply{Id: "0", Result: true}, nil
+}
+
+//WorkerAlive 节点在线检测
+func (s *Server) WorkerAlive(ctx context.Context, req *pb.Request) (*pb.Reply, error) {
+	return &pb.Reply{Id: "0", Result: true}, nil
 }
