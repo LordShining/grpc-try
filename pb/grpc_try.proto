@@ -9,23 +9,23 @@ service Worker {
 }
 
 service Balancer {
-    rpc GetWorks (WorkRequest) returns (Reply) {};
+    rpc Working (WorkRequest) returns (Reply) {};
     rpc WorkerRegister (WorkerRegisterRequest) returns (Reply) {};
     rpc WorkerAlive (Request) returns (Reply) {};
 }
 
 message Request {
-    int32 id = 1;
+    string id = 1;
     string message = 2;
 }
 
 message Reply {
-    int32 id = 1;
+    string id = 1;
     bool result = 2;
 }
 
 message WorkRequest {
-    int32 id = 1;
+    string id = 1;
     repeated string comments = 2;
 }
 

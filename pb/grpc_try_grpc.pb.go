@@ -100,7 +100,7 @@ var _Worker_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BalancerClient interface {
-	GetWorks(ctx context.Context, in *WorkRequest, opts ...grpc.CallOption) (*Reply, error)
+	Working(ctx context.Context, in *WorkRequest, opts ...grpc.CallOption) (*Reply, error)
 	WorkerRegister(ctx context.Context, in *WorkerRegisterRequest, opts ...grpc.CallOption) (*Reply, error)
 	WorkerAlive(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Reply, error)
 }
@@ -113,9 +113,9 @@ func NewBalancerClient(cc grpc.ClientConnInterface) BalancerClient {
 	return &balancerClient{cc}
 }
 
-func (c *balancerClient) GetWorks(ctx context.Context, in *WorkRequest, opts ...grpc.CallOption) (*Reply, error) {
+func (c *balancerClient) Working(ctx context.Context, in *WorkRequest, opts ...grpc.CallOption) (*Reply, error) {
 	out := new(Reply)
-	err := c.cc.Invoke(ctx, "/pb.Balancer/GetWorks", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.Balancer/Working", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -144,7 +144,7 @@ func (c *balancerClient) WorkerAlive(ctx context.Context, in *Request, opts ...g
 // All implementations must embed UnimplementedBalancerServer
 // for forward compatibility
 type BalancerServer interface {
-	GetWorks(context.Context, *WorkRequest) (*Reply, error)
+	Working(context.Context, *WorkRequest) (*Reply, error)
 	WorkerRegister(context.Context, *WorkerRegisterRequest) (*Reply, error)
 	WorkerAlive(context.Context, *Request) (*Reply, error)
 	mustEmbedUnimplementedBalancerServer()
@@ -154,8 +154,8 @@ type BalancerServer interface {
 type UnimplementedBalancerServer struct {
 }
 
-func (UnimplementedBalancerServer) GetWorks(context.Context, *WorkRequest) (*Reply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetWorks not implemented")
+func (UnimplementedBalancerServer) Working(context.Context, *WorkRequest) (*Reply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Working not implemented")
 }
 func (UnimplementedBalancerServer) WorkerRegister(context.Context, *WorkerRegisterRequest) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method WorkerRegister not implemented")
@@ -176,20 +176,20 @@ func RegisterBalancerServer(s grpc.ServiceRegistrar, srv BalancerServer) {
 	s.RegisterService(&_Balancer_serviceDesc, srv)
 }
 
-func _Balancer_GetWorks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Balancer_Working_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WorkRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BalancerServer).GetWorks(ctx, in)
+		return srv.(BalancerServer).Working(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.Balancer/GetWorks",
+		FullMethod: "/pb.Balancer/Working",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BalancerServer).GetWorks(ctx, req.(*WorkRequest))
+		return srv.(BalancerServer).Working(ctx, req.(*WorkRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -235,8 +235,8 @@ var _Balancer_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*BalancerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetWorks",
-			Handler:    _Balancer_GetWorks_Handler,
+			MethodName: "Working",
+			Handler:    _Balancer_Working_Handler,
 		},
 		{
 			MethodName: "WorkerRegister",
