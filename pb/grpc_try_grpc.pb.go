@@ -101,8 +101,8 @@ var _Worker_serviceDesc = grpc.ServiceDesc{
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BalancerClient interface {
 	Working(ctx context.Context, in *WorkRequest, opts ...grpc.CallOption) (*Reply, error)
-	WorkerRegister(ctx context.Context, in *WorkerRegisterRequest, opts ...grpc.CallOption) (*Reply, error)
-	WorkerAlive(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Reply, error)
+	WorkerRegister(ctx context.Context, in *WorkerRequest, opts ...grpc.CallOption) (*Reply, error)
+	WorkerAlive(ctx context.Context, in *WorkerRequest, opts ...grpc.CallOption) (*Reply, error)
 }
 
 type balancerClient struct {
@@ -122,7 +122,7 @@ func (c *balancerClient) Working(ctx context.Context, in *WorkRequest, opts ...g
 	return out, nil
 }
 
-func (c *balancerClient) WorkerRegister(ctx context.Context, in *WorkerRegisterRequest, opts ...grpc.CallOption) (*Reply, error) {
+func (c *balancerClient) WorkerRegister(ctx context.Context, in *WorkerRequest, opts ...grpc.CallOption) (*Reply, error) {
 	out := new(Reply)
 	err := c.cc.Invoke(ctx, "/pb.Balancer/WorkerRegister", in, out, opts...)
 	if err != nil {
@@ -131,7 +131,7 @@ func (c *balancerClient) WorkerRegister(ctx context.Context, in *WorkerRegisterR
 	return out, nil
 }
 
-func (c *balancerClient) WorkerAlive(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Reply, error) {
+func (c *balancerClient) WorkerAlive(ctx context.Context, in *WorkerRequest, opts ...grpc.CallOption) (*Reply, error) {
 	out := new(Reply)
 	err := c.cc.Invoke(ctx, "/pb.Balancer/WorkerAlive", in, out, opts...)
 	if err != nil {
@@ -145,8 +145,8 @@ func (c *balancerClient) WorkerAlive(ctx context.Context, in *Request, opts ...g
 // for forward compatibility
 type BalancerServer interface {
 	Working(context.Context, *WorkRequest) (*Reply, error)
-	WorkerRegister(context.Context, *WorkerRegisterRequest) (*Reply, error)
-	WorkerAlive(context.Context, *Request) (*Reply, error)
+	WorkerRegister(context.Context, *WorkerRequest) (*Reply, error)
+	WorkerAlive(context.Context, *WorkerRequest) (*Reply, error)
 	mustEmbedUnimplementedBalancerServer()
 }
 
@@ -157,10 +157,10 @@ type UnimplementedBalancerServer struct {
 func (UnimplementedBalancerServer) Working(context.Context, *WorkRequest) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Working not implemented")
 }
-func (UnimplementedBalancerServer) WorkerRegister(context.Context, *WorkerRegisterRequest) (*Reply, error) {
+func (UnimplementedBalancerServer) WorkerRegister(context.Context, *WorkerRequest) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method WorkerRegister not implemented")
 }
-func (UnimplementedBalancerServer) WorkerAlive(context.Context, *Request) (*Reply, error) {
+func (UnimplementedBalancerServer) WorkerAlive(context.Context, *WorkerRequest) (*Reply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method WorkerAlive not implemented")
 }
 func (UnimplementedBalancerServer) mustEmbedUnimplementedBalancerServer() {}
@@ -195,7 +195,7 @@ func _Balancer_Working_Handler(srv interface{}, ctx context.Context, dec func(in
 }
 
 func _Balancer_WorkerRegister_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(WorkerRegisterRequest)
+	in := new(WorkerRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -207,13 +207,13 @@ func _Balancer_WorkerRegister_Handler(srv interface{}, ctx context.Context, dec 
 		FullMethod: "/pb.Balancer/WorkerRegister",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BalancerServer).WorkerRegister(ctx, req.(*WorkerRegisterRequest))
+		return srv.(BalancerServer).WorkerRegister(ctx, req.(*WorkerRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Balancer_WorkerAlive_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Request)
+	in := new(WorkerRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -225,7 +225,7 @@ func _Balancer_WorkerAlive_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/pb.Balancer/WorkerAlive",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BalancerServer).WorkerAlive(ctx, req.(*Request))
+		return srv.(BalancerServer).WorkerAlive(ctx, req.(*WorkerRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

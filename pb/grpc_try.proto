@@ -10,8 +10,8 @@ service Worker {
 
 service Balancer {
     rpc Working (WorkRequest) returns (Reply) {};
-    rpc WorkerRegister (WorkerRegisterRequest) returns (Reply) {};
-    rpc WorkerAlive (Request) returns (Reply) {};
+    rpc WorkerRegister (WorkerRequest) returns (Reply) {};
+    rpc WorkerAlive (WorkerRequest) returns (Reply) {};
 }
 
 message Request {
@@ -29,6 +29,6 @@ message WorkRequest {
     repeated string comments = 2;
 }
 
-message WorkerRegisterRequest {
+message WorkerRequest {
     string port = 1;
 }
